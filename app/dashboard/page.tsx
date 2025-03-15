@@ -21,9 +21,21 @@ export default async function DashboardPage() {
     return <div>Loading...</div>;
   }
 
+  // Explicitly select fields to match the RecipeCardProps interface
   const recipes = await db.recipe.findMany({
     where: {
       userId: user.id,
+    },
+    select: {
+      id: true,
+      title: true,
+      description: true,
+      imageUrl: true,
+      cookTime: true,
+      calories: true,
+      cuisine: true,
+      tags: true,
+      isGenerated: true,
     },
     orderBy: {
       createdAt: "desc",

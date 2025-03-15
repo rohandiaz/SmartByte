@@ -8,11 +8,13 @@ export interface Recipe {
   userId: string;
   tags: string[];
   cookTime: number | null;
+  prepTime: number | null;
+  difficulty: 'Easy' | 'Medium' | 'Hard' | null;
+  cuisine: string | null;
   isGenerated: boolean;
   createdAt: Date;
   updatedAt: Date;
-  calories?: number | null; // Adding this for consistency with the RecipeCard
-  cuisine?: string | null; // Adding this for consistency with the RecipeCard
+  nutritionalInfo?: NutritionalInfo | null;
 }
 
 export interface RecipeFormData {
@@ -22,11 +24,11 @@ export interface RecipeFormData {
   instructions: string[];
   prepTime?: number;
   cookTime?: number;
-  servings?: number;
   difficulty?: 'Easy' | 'Medium' | 'Hard';
   tags: string[];
   imageUrl?: string;
-  cuisine?: string; // Adding this to match the RecipeCard
+  cuisine?: string;
+  nutritionalInfo?: NutritionalInfo;
 }
 
 export interface RecipeFilters {
@@ -36,10 +38,14 @@ export interface RecipeFilters {
   maxCookTime?: number;
   tags?: string[];
   ingredients?: string[];
-  cuisine?: string; // Adding this to filter by cuisine
+  cuisine?: string;
+  maxCalories?: number;
+  mealType?: string;
 }
 
 export interface NutritionalInfo {
+  id?: string;
+  recipeId?: string;
   calories: number;
   protein: number; // in grams
   carbs: number; // in grams
@@ -55,7 +61,9 @@ export interface RecipeSuggestionRequest {
     difficulty?: 'Easy' | 'Medium' | 'Hard';
     maxTotalTime?: number;
     dietaryRestrictions?: string[];
-    cuisine?: string; // Adding this for cuisine preference
+    cuisine?: string;
+    maxCalories?: number;
+    mealType?: string; // Added for meal type preference (breakfast, lunch, dinner)
   };
 }
 
@@ -79,4 +87,18 @@ export interface RecipeCardProps {
   };
   onDelete?: (id: string) => Promise<void>;
   isDeleting?: boolean;
+}
+
+// For consistency with the generateRecipe function
+export interface GeneratedRecipe {
+  title: string;
+  description: string;
+  ingredients: string[];
+  instructions: string[];
+  cookTime: number | null;
+  prepTime: number | null;
+  difficulty: 'Easy' | 'Medium' | 'Hard';
+  cuisine: string;
+  tags: string[];
+  nutritionalInfo?: NutritionalInfo;
 }

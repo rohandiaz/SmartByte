@@ -1,4 +1,3 @@
-// app/api/gemini/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { generateRecipe } from '@/lib/gemini';
 import { db } from '@/lib/prisma';
@@ -38,7 +37,12 @@ export async function POST(request: NextRequest) {
         throw new Error('Generated recipe is missing required fields');
       }
 
-      // Save the generated recipe to the database
+      // Calculate total time if both prep and cook time are available
+      const totalTime = (generatedRecipe.prepTime && generatedRecipe.cookTime) 
+        ? generatedRecipe.prepTime + generatedRecipe.cookTime 
+        : null;
+
+      // Save the generated recipe to the database using existing schema fields
       console.log('Saving recipe to database...');
       const savedRecipe = await db.recipe.create({
         data: {
@@ -46,7 +50,12 @@ export async function POST(request: NextRequest) {
           description: generatedRecipe.description || '',
           ingredients: generatedRecipe.ingredients,
           instructions: generatedRecipe.instructions,
+          prepTime: generatedRecipe.prepTime,
           cookTime: generatedRecipe.cookTime,
+          totalTime: totalTime,
+          difficulty: generatedRecipe.difficulty || null,
+          cuisine: generatedRecipe.cuisine || null,
+          calories: generatedRecipe.nutritionalInfo?.calories || null,
           tags: generatedRecipe.tags || [],
           isGenerated: true,
           userId: userId.id,
@@ -54,6 +63,7 @@ export async function POST(request: NextRequest) {
       });
       console.log('Recipe saved successfully:', savedRecipe.id);
 
+      // Return the generated recipe with nutritional info separately since we can't store it in the DB
       return NextResponse.json({ 
         recipe: savedRecipe,
         nutritionalInfo: generatedRecipe.nutritionalInfo

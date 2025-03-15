@@ -1,4 +1,3 @@
-// lib/gemini.ts
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { Recipe, RecipeSuggestionRequest, NutritionalInfo } from '@/types/recipe';
 
@@ -14,6 +13,7 @@ export type GeneratedRecipe = {
   prepTime: number | null;
   servings: number | null;
   difficulty: 'Easy' | 'Medium' | 'Hard';
+  cuisine: string;
   tags: string[];
   nutritionalInfo?: NutritionalInfo;
 };
@@ -26,6 +26,7 @@ export async function generateRecipe(request: RecipeSuggestionRequest): Promise<
     // Construct the prompt
     let prompt = `Generate a detailed recipe using these ingredients: ${request.ingredients.join(', ')}.\n`;
     
+    // Handle preferences
     if (request.preferences) {
       if (request.preferences.maxTotalTime) {
         prompt += `The total cooking time should not exceed ${request.preferences.maxTotalTime} minutes.\n`;
@@ -37,6 +38,26 @@ export async function generateRecipe(request: RecipeSuggestionRequest): Promise<
       
       if (request.preferences.dietaryRestrictions && request.preferences.dietaryRestrictions.length > 0) {
         prompt += `Follow these dietary restrictions: ${request.preferences.dietaryRestrictions.join(', ')}.\n`;
+      }
+      
+      // Added cuisine preference
+      if (request.preferences.cuisine) {
+        prompt += `The recipe should be ${request.preferences.cuisine} cuisine.\n`;
+      }
+      
+      // Added calorie restriction
+      if (request.preferences.maxCalories) {
+        prompt += `Each serving should not exceed ${request.preferences.maxCalories} calories.\n`;
+      }
+      
+      // Added preference for number of servings
+      if (request.preferences.servings) {
+        prompt += `The recipe should serve ${request.preferences.servings} people.\n`;
+      }
+      
+      // Added meal type preference
+      if (request.preferences.mealType) {
+        prompt += `This should be a recipe for ${request.preferences.mealType}.\n`;
       }
     }
     
@@ -51,6 +72,7 @@ export async function generateRecipe(request: RecipeSuggestionRequest): Promise<
       "cookTime": cooking time in minutes (number),
       "servings": number of servings (number),
       "difficulty": "Easy"/"Medium"/"Hard",
+      "cuisine": "The cuisine type (e.g., Italian, Mexican, etc.)",
       "tags": ["tag1", "tag2", ...],
       "nutritionalInfo": {
         "calories": estimated calories per serving (number),

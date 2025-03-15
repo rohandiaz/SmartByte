@@ -1,4 +1,3 @@
-// components/recipe/recipe-generator-form.tsx
 import { useState } from 'react';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
@@ -14,6 +13,9 @@ export function RecipeGeneratorForm({ onGenerate }: RecipeGeneratorFormProps) {
   const [maxTotalTime, setMaxTotalTime] = useState<string>('');
   const [difficulty, setDifficulty] = useState<'Easy' | 'Medium' | 'Hard' | ''>('');
   const [dietaryRestrictions, setDietaryRestrictions] = useState<string>('');
+  const [cuisine, setCuisine] = useState<string>('');
+  const [maxCalories, setMaxCalories] = useState<string>('');
+  const [mealType, setMealType] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -27,6 +29,9 @@ export function RecipeGeneratorForm({ onGenerate }: RecipeGeneratorFormProps) {
           maxTotalTime: maxTotalTime ? parseInt(maxTotalTime, 10) : undefined,
           difficulty: difficulty as 'Easy' | 'Medium' | 'Hard' | undefined,
           dietaryRestrictions: dietaryRestrictions ? dietaryRestrictions.split(',').map(item => item.trim()).filter(Boolean) : undefined,
+          cuisine: cuisine.trim() || undefined,
+          maxCalories: maxCalories ? parseInt(maxCalories, 10) : undefined,
+          mealType: mealType.trim() || undefined,
         }
       });
     } catch (error) {
@@ -54,7 +59,33 @@ export function RecipeGeneratorForm({ onGenerate }: RecipeGeneratorFormProps) {
           />
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label htmlFor="cuisine" className="block text-sm font-medium text-gray-700 mb-1">
+              Cuisine Type
+            </label>
+            <Input
+              id="cuisine"
+              placeholder="e.g. Italian, Mexican, Thai"
+              value={cuisine}
+              onChange={(e) => setCuisine(e.target.value)}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="mealType" className="block text-sm font-medium text-gray-700 mb-1">
+              Meal Type
+            </label>
+            <Input
+              id="mealType"
+              placeholder="e.g. breakfast, lunch, dinner, snack"
+              value={mealType}
+              onChange={(e) => setMealType(e.target.value)}
+            />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="maxTotalTime" className="block text-sm font-medium text-gray-700 mb-1">
               Max Total Time (minutes)
@@ -84,7 +115,9 @@ export function RecipeGeneratorForm({ onGenerate }: RecipeGeneratorFormProps) {
               <option value="Hard">Hard</option>
             </select>
           </div>
-          
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label htmlFor="dietaryRestrictions" className="block text-sm font-medium text-gray-700 mb-1">
               Dietary Restrictions (comma separated)
@@ -94,6 +127,19 @@ export function RecipeGeneratorForm({ onGenerate }: RecipeGeneratorFormProps) {
               placeholder="e.g. vegetarian, gluten-free"
               value={dietaryRestrictions}
               onChange={(e) => setDietaryRestrictions(e.target.value)}
+            />
+          </div>
+          
+          <div>
+            <label htmlFor="maxCalories" className="block text-sm font-medium text-gray-700 mb-1">
+              Max Calories (per serving)
+            </label>
+            <Input
+              id="maxCalories"
+              type="number"
+              placeholder="e.g. 500"
+              value={maxCalories}
+              onChange={(e) => setMaxCalories(e.target.value)}
             />
           </div>
         </div>

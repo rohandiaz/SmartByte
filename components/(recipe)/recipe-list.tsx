@@ -3,7 +3,13 @@
 import { useState } from 'react';
 import { RecipeCard } from './recipe-card';
 import { useRouter } from 'next/navigation';
-import { RecipeListProps } from '@/types/recipe'; // Import the type
+import { RecipeCardProps } from '@/types/recipe'; // Update import to use RecipeCardProps instead
+
+// Update the props interface to accept the shape of data that's actually being passed
+export interface RecipeListProps {
+  recipes: RecipeCardProps['recipe'][]; // Use the recipe type from RecipeCardProps
+  onDelete?: boolean;
+}
 
 export default function RecipeList({ recipes, onDelete }: RecipeListProps) {
   const router = useRouter();

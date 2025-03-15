@@ -1,4 +1,3 @@
-// app/recipes/generate/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -52,6 +51,10 @@ export default function GenerateRecipePage() {
         <ul className="list-disc pl-5 space-y-1">
           <li>List as many ingredients as possible for more creative recipes</li>
           <li>Specify dietary restrictions if you have any</li>
+          <li>Choose a cuisine type for more authentic flavor combinations</li>
+          <li>Indicate meal type (breakfast, lunch, dinner) for appropriate recipes</li>
+          <li>Set number of servings based on how many people you're feeding</li>
+          <li>Specify calorie limits if you're watching your intake</li>
           <li>Choose difficulty level based on your cooking experience</li>
           <li>Set time constraints if you're in a hurry</li>
           <li>The AI will prioritize using ingredients you've listed</li>
