@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { RecipeCard } from './recipe-card';
-import { useRouter } from 'next/navigation';
+//import { useRouter } from 'next/navigation';
 import { RecipeCardProps } from '@/types/recipe';
 import { motion } from 'framer-motion';
 
@@ -11,7 +11,7 @@ export interface RecipeListProps {
 }
 
 export default function RecipeList({ recipes }: RecipeListProps) {
-  const router = useRouter();
+  //const router = useRouter();
   const [searchTerm, setSearchTerm] = useState<string>('');
 
   // Filter recipes based on search term
