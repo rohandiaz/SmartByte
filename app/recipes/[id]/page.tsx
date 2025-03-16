@@ -6,13 +6,11 @@ import Link from 'next/link';
 import { Clock, Star, ChefHat, Tag, Calendar, ArrowLeft } from 'lucide-react';
 
 interface RecipePageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 export default async function RecipePage({ params }: RecipePageProps) {
-  // Await params before using them
+  // Now await params as suggested by the error message
   const resolvedParams = await params;
   const id = resolvedParams.id;
   
@@ -32,7 +30,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
   
   const recipe = await db.recipe.findUnique({
     where: { 
-      id: id, // Use the awaited id
+      id: id,
       userId: user.id, 
     },
   });
@@ -119,7 +117,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
           
           <div className="flex flex-wrap items-center gap-2 mb-8">
             <Tag className="w-5 h-5 text-gray-500 dark:text-gray-400" />
-            {recipe.tags.length > 0 ? (
+            {recipe.tags && recipe.tags.length > 0 ? (
               recipe.tags.map((tag, index) => (
                 <span 
                   key={index}
@@ -152,7 +150,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
                 Ingredients
               </h2>
               <ul className="space-y-3">
-                {recipe.ingredients.map((ingredient, index) => (
+                {recipe.ingredients && recipe.ingredients.map((ingredient, index) => (
                   <li key={index} className="flex items-center">
                     <span className="w-2 h-2 rounded-full bg-blue-500 mr-3 flex-shrink-0"></span>
                     <span className="text-gray-700 dark:text-gray-300">{ingredient}</span>
@@ -167,7 +165,7 @@ export default async function RecipePage({ params }: RecipePageProps) {
                 Instructions
               </h2>
               <ol className="space-y-4">
-                {recipe.instructions.map((step, index) => (
+                {recipe.instructions && recipe.instructions.map((step, index) => (
                   <li key={index} className="pb-4 border-b border-gray-100 dark:border-gray-700 last:border-0">
                     <div className="flex items-start">
                       <span className="flex-shrink-0 w-6 h-6 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 flex items-center justify-center text-sm font-medium mr-3">
