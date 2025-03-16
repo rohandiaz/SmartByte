@@ -3,15 +3,10 @@ import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/lib/checkUser";
 import { db } from "@/lib/prisma";
 
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
+// This is the correct type for Next.js dynamic route parameters
 export async function DELETE(
   request: NextRequest,
-  context: RouteParams
+  { params }: { params: { id: string } }
 ) {
   try {
     const { userId } = await auth();
@@ -26,7 +21,7 @@ export async function DELETE(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
     
-    const recipeId = context.params.id;
+    const recipeId = params.id;
     
     // Find the recipe to verify ownership
     const recipe = await db.recipe.findUnique({
