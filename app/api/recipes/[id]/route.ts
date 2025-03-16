@@ -3,9 +3,10 @@ import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/lib/checkUser";
 import { db } from "@/lib/prisma";
 
+// Using the correct NextJS route handler type
 export async function DELETE(
   request: NextRequest,
-  context: { params: Promise<{ id: string }> | { id: string } }
+  { params }: { params: { id: string } }
 ) {
   try {
     const { userId } = await auth();
@@ -20,8 +21,7 @@ export async function DELETE(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
     
-    // Await params before using them
-    const params = await context.params;
+    // Make sure to get id properly
     const recipeId = params.id;
     
     // Find the recipe to verify ownership
