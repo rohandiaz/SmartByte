@@ -8,33 +8,11 @@ import { motion } from 'framer-motion';
 
 export interface RecipeListProps {
   recipes: RecipeCardProps['recipe'][];
-  onDelete?: boolean;
 }
 
-export default function RecipeList({ recipes, onDelete }: RecipeListProps) {
+export default function RecipeList({ recipes }: RecipeListProps) {
   const router = useRouter();
-  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
-
-  const handleDelete = async (id: string) => {
-    try {
-      setDeletingId(id);
-      const response = await fetch(`/api/recipes/${id}`, {
-        method: 'DELETE',
-      });
-      
-      if (response.ok) {
-        // Refresh the page to show updated list
-        router.refresh();
-      } else {
-        console.error('Failed to delete recipe');
-      }
-    } catch (error) {
-      console.error('Error deleting recipe:', error);
-    } finally {
-      setDeletingId(null);
-    }
-  };
 
   // Filter recipes based on search term
   const filteredRecipes = recipes.filter(recipe => {
@@ -110,11 +88,7 @@ export default function RecipeList({ recipes, onDelete }: RecipeListProps) {
         >
           {filteredRecipes.map((recipe) => (
             <motion.div key={recipe.id} variants={item}>
-              <RecipeCard 
-                recipe={recipe} 
-                onDelete={onDelete ? handleDelete : undefined} 
-                isDeleting={deletingId === recipe.id}
-              />
+              <RecipeCard recipe={recipe} />
             </motion.div>
           ))}
         </motion.div>

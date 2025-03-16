@@ -86,10 +86,7 @@ export default async function RecipesPage() {
               </h2>
             </div>
             
-            <RecipeList 
-              recipes={recipes} 
-              onDelete={!!userId}
-            />
+            <RecipeList recipes={recipes} />
           </div>
         ) : (
           <Card className="border border-dashed">
