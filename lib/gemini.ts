@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import { Recipe, RecipeSuggestionRequest, NutritionalInfo } from '@/types/recipe';
+import { RecipeSuggestionRequest, NutritionalInfo } from '@/types/recipe';
 
 // Initialize the Google Generative AI with your API key
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
@@ -51,9 +51,9 @@ export async function generateRecipe(request: RecipeSuggestionRequest): Promise<
       }
       
       // Added preference for number of servings
-      if (request.preferences.servings) {
-        prompt += `The recipe should serve ${request.preferences.servings} people.\n`;
-      }
+      // if (request.preferences.servings) {
+      //   prompt += `The recipe should serve ${request.preferences.servings} people.\n`;
+      // }
       
       // Added meal type preference
       if (request.preferences.mealType) {

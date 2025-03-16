@@ -6,34 +6,33 @@ import RecipeList from "@/components/(recipe)/recipe-list";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SignOutButton } from "@clerk/nextjs";
-import { 
-  LogOut, 
-  ChefHat, 
-  Book, 
+import {
+  LogOut,
+  ChefHat,
+  Book,
   PlusCircle,
   Sparkles
 } from "lucide-react";
-import { 
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
+//import { Badge } from "@/components/ui/badge";
 
 export default async function DashboardPage() {
   const { userId } = await auth();
-  
+
   if (!userId) {
     redirect("/sign-in");
   }
 
   const user = await checkUser();
-  
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -120,28 +119,28 @@ export default async function DashboardPage() {
               <TabsTrigger value="manual">Manual ({manualRecipes.length})</TabsTrigger>
             </TabsList>
           </div>
-          
+
           <TabsContent value="all" className="mt-0">
             <RecipeList recipes={recipes} onDelete={true} />
           </TabsContent>
-          
+
           <TabsContent value="ai" className="mt-0">
             {aiRecipes.length > 0 ? (
               <RecipeList recipes={aiRecipes} onDelete={true} />
             ) : (
-              <EmptyState 
+              <EmptyState
                 message="No AI-generated recipes yet"
                 buttonText="Generate Your First AI Recipe"
                 href="/recipes/generate"
               />
             )}
           </TabsContent>
-          
+
           <TabsContent value="manual" className="mt-0">
             {manualRecipes.length > 0 ? (
               <RecipeList recipes={manualRecipes} onDelete={true} />
             ) : (
-              <EmptyState 
+              <EmptyState
                 message="No manual recipes created yet"
                 buttonText="Create Your First Recipe"
                 href="/recipes/new"
@@ -150,7 +149,7 @@ export default async function DashboardPage() {
           </TabsContent>
         </Tabs>
       ) : (
-        <EmptyState 
+        <EmptyState
           message="You haven't created any recipes yet"
           buttonText="Create Your First Recipe"
           href="/recipes/generate"

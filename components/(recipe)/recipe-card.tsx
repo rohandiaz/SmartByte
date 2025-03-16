@@ -2,13 +2,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Trash2, Clock, Flame, Menu, Tag } from 'lucide-react';
 import { RecipeCardProps } from '@/types/recipe';
-import { 
-  Card, 
-  CardContent, 
-  CardFooter, 
-  CardHeader, 
-  CardTitle, 
-  CardDescription 
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
@@ -25,7 +24,7 @@ export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardP
   // Generate a background color based on cuisine for visual distinction
   const getCuisineColor = (cuisine?: string | null) => {
     if (!cuisine) return 'bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900';
-    
+
     const cuisineColors: Record<string, string> = {
       'Italian': 'bg-gradient-to-r from-green-50 to-red-50 dark:from-green-900/30 dark:to-red-900/30',
       'Mexican': 'bg-gradient-to-r from-red-50 to-green-50 dark:from-red-900/30 dark:to-green-900/30',
@@ -37,7 +36,7 @@ export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardP
       'Greek': 'bg-gradient-to-r from-blue-50 to-white dark:from-blue-900/30 dark:to-gray-800',
       'Mediterranean': 'bg-gradient-to-r from-blue-50 to-orange-50 dark:from-blue-900/30 dark:to-orange-900/30',
     };
-    
+
     return cuisineColors[cuisine] || 'bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-900/30 dark:to-blue-900/30';
   };
 
@@ -55,7 +54,7 @@ export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardP
             <Trash2 className="h-4 w-4" />
           </Button>
         )}
-        
+
         {recipe.isGenerated && (
           <div className="absolute top-2 right-2 z-10">
             <Badge variant="secondary" className="flex items-center gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/50 dark:text-blue-200 dark:hover:bg-blue-900/70">
@@ -104,8 +103,8 @@ export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardP
                 <Tag className="h-3.5 w-3.5 text-blue-500 dark:text-blue-400" />
                 <div className="flex flex-wrap gap-1.5">
                   {recipe.tags.slice(0, 3).map((tag, index) => (
-                    <Badge 
-                      key={index} 
+                    <Badge
+                      key={index}
                       variant="outline"
                       className="text-xs bg-white dark:bg-gray-800 bg-opacity-70 text-gray-800 dark:text-gray-200 font-normal px-2 py-0 h-5 dark:border-gray-700"
                     >
@@ -120,7 +119,7 @@ export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardP
             </>
           )}
         </CardContent>
-        
+
         <div className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-400 to-purple-500 transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
       </Card>
     </Link>

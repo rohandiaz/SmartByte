@@ -1,6 +1,6 @@
 // "use client";
 
-import { ReactNode, JSX } from "react";
+import { ReactNode } from "react";
 
 const AuthLayout = ({ children }: { children: ReactNode }) => {
   return (

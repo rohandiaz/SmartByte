@@ -113,7 +113,7 @@ export default async function Home() {
                   <div className="w-full md:w-1/2">
                     <h3 className="text-xl font-semibold mb-2">Ingredient-Based Search</h3>
                     <p className="text-slate-600 dark:text-slate-300 mb-4">
-                      Enter the ingredients you have on hand, and SmartByte will instantly find recipes that match what's in your kitchen.
+                      Enter the ingredients you have on hand, and SmartByte will instantly find recipes that match what&apos;s in your kitchen.
                     </p>
                   </div>
                   <div className="w-full md:w-1/2 bg-blue-50 dark:bg-blue-900/20 p-6 rounded-lg">

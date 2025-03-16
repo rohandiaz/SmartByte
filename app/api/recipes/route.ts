@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/lib/checkUser";
 import {db} from "@/lib/prisma";
+import { Prisma } from "@prisma/client";
 
 // GET all recipes
 export async function GET(request: NextRequest) {
@@ -10,7 +11,7 @@ export async function GET(request: NextRequest) {
     const userId = searchParams.get("userId");
     const tag = searchParams.get("tag");
 
-    const where: any = {};
+    const where: Prisma.RecipeWhereInput = {};
     
     if (userId) {
       where.userId = userId;
