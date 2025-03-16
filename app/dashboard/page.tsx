@@ -121,12 +121,12 @@ export default async function DashboardPage() {
           </div>
 
           <TabsContent value="all" className="mt-0">
-            <RecipeList recipes={recipes} onDelete={true} />
+            <RecipeList recipes={recipes} />
           </TabsContent>
 
           <TabsContent value="ai" className="mt-0">
             {aiRecipes.length > 0 ? (
-              <RecipeList recipes={aiRecipes} onDelete={true} />
+              <RecipeList recipes={aiRecipes} />
             ) : (
               <EmptyState
                 message="No AI-generated recipes yet"
@@ -138,7 +138,7 @@ export default async function DashboardPage() {
 
           <TabsContent value="manual" className="mt-0">
             {manualRecipes.length > 0 ? (
-              <RecipeList recipes={manualRecipes} onDelete={true} />
+              <RecipeList recipes={manualRecipes} />
             ) : (
               <EmptyState
                 message="No manual recipes created yet"
