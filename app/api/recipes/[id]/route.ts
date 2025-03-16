@@ -1,4 +1,3 @@
-// app/api/recipes/[id]/route.ts
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { checkUser } from "@/lib/checkUser";
@@ -6,7 +5,7 @@ import { db } from "@/lib/prisma";
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
     const { userId } = await auth();
@@ -21,6 +20,8 @@ export async function DELETE(
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
     
+    // Await params before using them
+    const params = await context.params;
     const recipeId = params.id;
     
     // Find the recipe to verify ownership
