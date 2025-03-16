@@ -1,6 +1,5 @@
 import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { Trash2, Clock, Flame, Menu, Tag } from 'lucide-react';
+import { Clock, Flame, Menu, Tag } from 'lucide-react';
 import { RecipeCardProps } from '@/types/recipe';
 import {
   Card,
@@ -12,15 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 
-export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardProps) {
-  const handleDelete = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onDelete) {
-      onDelete(recipe.id);
-    }
-  };
-
+export function RecipeCard({ recipe }: Omit<RecipeCardProps, 'onDelete' | 'isDeleting'>) {
   // Generate a background color based on cuisine for visual distinction
   const getCuisineColor = (cuisine?: string | null) => {
     if (!cuisine) return 'bg-gradient-to-r from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900';
@@ -43,18 +34,6 @@ export function RecipeCard({ recipe, onDelete, isDeleting = false }: RecipeCardP
   return (
     <Link href={`/recipes/${recipe.id}`} className="block">
       <Card className={`relative h-full hover:shadow-lg transition-all ${getCuisineColor(recipe.cuisine)} border-slate-200 dark:border-slate-700 overflow-hidden group`}>
-        {onDelete && (
-          <Button
-            onClick={handleDelete}
-            variant="destructive"
-            size="icon"
-            className="absolute top-2 left-2 h-8 w-8 rounded-full opacity-0 group-hover:opacity-100 transition-opacity z-10"
-            disabled={isDeleting}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-        )}
-
         {recipe.isGenerated && (
           <div className="absolute top-2 right-2 z-10">
             <Badge variant="secondary" className="flex items-center gap-1 bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900/50 dark:text-blue-200 dark:hover:bg-blue-900/70">
