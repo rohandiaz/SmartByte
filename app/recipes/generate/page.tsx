@@ -99,21 +99,21 @@ export default function GenerateRecipePage() {
               Indicate meal type (breakfast, lunch, dinner) for appropriate recipes
             </TipItem>
             <TipItem icon={<CheckCircle className="h-4 w-4 text-blue-600" />}>
-              Set number of servings based on how many people you're feeding
+              Set number of servings based on how many people you&apos;re feeding
             </TipItem>
             <TipItem icon={<CheckCircle className="h-4 w-4 text-blue-600" />}>
-              Specify calorie limits if you're watching your intake
+              Specify calorie limits if you&apos;re watching your intake
             </TipItem>
             <TipItem icon={<CheckCircle className="h-4 w-4 text-blue-600" />}>
               Choose difficulty level based on your cooking experience
             </TipItem>
             <TipItem icon={<Clock className="h-4 w-4 text-blue-600" />}>
-              Set time constraints if you're in a hurry
+              Set time constraints if you&apos;re in a hurry
             </TipItem>
           </div>
           <Separator className="my-4 bg-blue-200/50" />
           <div className="text-blue-700 font-medium text-center mt-2">
-            Our AI will prioritize using ingredients you've listed while creating your perfect recipe
+            Our AI will prioritize using ingredients you&apos;ve listed while creating your perfect recipe
           </div>
         </CardContent>
       </Card>
