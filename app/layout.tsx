@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,14 +26,88 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider>
-        <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
-    </html>
+      <html lang="en" suppressHydrationWarning className="light">
+        <head>
+          {/* Preload dark mode detection script */}
+          <Script
+            id="dark-mode-script"
+            strategy="beforeInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                try {
+                  let theme = localStorage.getItem('theme') || 'system';
+                  if (theme === 'system') {
+                    theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+                  }
+                  if (theme === 'dark') {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                  }
+                } catch (e) {}
+              `,
+            }}
+          />
+          
+          {/* Dark mode toggle script */}
+          <Script
+            id="dark-mode-toggle-script"
+            strategy="afterInteractive"
+            dangerouslySetInnerHTML={{
+              __html: `
+                function createToggleButton() {
+                  const button = document.createElement('button');
+                  button.id = 'theme-toggle';
+                  button.classList.add('fixed', 'bottom-4', 'right-4', 'p-2', 'rounded-full', 'bg-gray-200', 'dark:bg-gray-800', 'shadow-lg', 'hover:bg-gray-300', 'dark:hover:bg-gray-700', 'transition-colors', 'z-50');
+                  button.ariaLabel = 'Toggle dark mode';
+                  
+                  function updateButtonIcon() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    button.innerHTML = isDark 
+                      ? '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-yellow-500"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path></svg>'
+                      : '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="h-6 w-6 text-blue-500"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>';
+                  }
+                  
+                  updateButtonIcon();
+                  
+                  button.addEventListener('click', function() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    const newTheme = isDark ? 'light' : 'dark';
+                    
+                    localStorage.setItem('theme', newTheme);
+                    
+                    if (newTheme === 'dark') {
+                      document.documentElement.classList.remove('light');
+                      document.documentElement.classList.add('dark');
+                    } else {
+                      document.documentElement.classList.remove('dark');
+                      document.documentElement.classList.add('light');
+                    }
+                    
+                    updateButtonIcon();
+                  });
+                  
+                  document.body.appendChild(button);
+                }
+                
+                // Create toggle button once DOM is loaded
+                if (document.readyState === 'loading') {
+                  document.addEventListener('DOMContentLoaded', createToggleButton);
+                } else {
+                  createToggleButton();
+                }
+              `,
+            }}
+          />
+        </head>
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors`}
+        >
+          {children}
+        </body>
+      </html>
     </ClerkProvider>
-    
   );
 }
